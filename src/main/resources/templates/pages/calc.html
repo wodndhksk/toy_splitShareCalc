@@ -2,11 +2,33 @@
 <html lang="ko"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{common/layout/layout}">
+      layout:decorate="~{common/layout/layout}"
+      th:with="title='Cody Page'">
 
 <div id="content" layout:fragment="content">
-  <div>
-    <h2>Calc Content</h2>
+  <div class="d-grid gap-3">
+    <div class="row" id="user-0">
+      <div class="input-group flex-nowrap ms-1">
+        <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping">
+          <div id="addBtn">
+            <a class="btn btn-primary" onclick="addUserBtn()">+</a>
+          </div>
+          <a class="btn btn-danger" id="delUserBtn" onclick="delUserBtn(0)">-</a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-group mb-3 ms-1">
+        <input type="text" class="form-control" aria-label="Text input with dropdown button">
+        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</button>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li><a class="dropdown-item" href="#">Action</a></li>
+          <li><a class="dropdown-item" href="#">Another action</a></li>
+          <li><a class="dropdown-item" href="#">Something else here</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item" href="#">Separated link</a></li>
+        </ul>
+      </div>
+    </div>
   </div>
 </div>
 

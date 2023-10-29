@@ -27,12 +27,55 @@
 <div class="container">
 <!--Header 영역-->
 <th:block th:replace="~{common/fragments/navHeader :: header}"></th:block>
-
+<br>
 <!--Content 내용 영역-->
 <th:block layout:fragment="content"></th:block>
 
 <!--Footer 영역-->
 <!--<footer th:replace="common/fragments/footer :: FooterFragment"></footer>-->
 </div>
+
+<script>
+    let userCount = 1
+    let totalCount = 1
+
+    // Username 추가 버튼 함수
+    function addUserBtn(){
+
+        if(totalCount > 6){
+            return alert(`${totalCount} 이상 추가 하실 수 없습니다`)
+        }
+
+        let newElement = document.createElement('div');
+        newElement.className = "row";
+        newElement.id = 'user-' + userCount;
+        newElement.innerHTML = `<div class="input-group flex-nowrap ms-1">`
+            + `<input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping">`
+            + `<div id="addBtn">`
+            + `<a class="btn btn-primary" id="addUserBtn" onclick="addUserBtn()">+</a>`
+            + `</div>`
+            + `<a class="btn btn-danger" id="delUserBtn" onclick="delUserBtn(${userCount})">-</a>`
+            + `</div>`
+
+        // 추가된 버튼에서만 '+' 버튼 보이게 처리
+        let element = document.querySelector(`#user-${userCount-1}`);
+        element.querySelector('#addBtn').remove();
+
+        // Username input 태그 append 처리
+        document.getElementById(`user-${userCount-1}`).insertAdjacentElement('afterend', newElement);
+        userCount++;
+        totalCount++;
+    }
+
+    // Username 삭제 버튼 함수
+    function delUserBtn(num){
+        console.log(num);
+        if(totalCount <= 1){
+            return alert("User 가 하나 이하입니다.")
+        }
+        document.querySelector(`#user-${num}`).remove();
+        totalCount--;
+    }
+</script>
 </body>
 </html>
