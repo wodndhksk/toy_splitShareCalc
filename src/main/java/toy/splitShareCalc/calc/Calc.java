@@ -21,8 +21,8 @@ public class Calc {
     @Column(name = "calc_id")
     private Long id;
 
-    @Column(length = 70)
-    private String name;
+    @Column(length = 70, name = "title")
+    private String title;
 
 
 }
