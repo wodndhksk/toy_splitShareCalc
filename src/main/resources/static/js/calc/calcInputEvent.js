@@ -1,5 +1,18 @@
 let userCount = 1
 let totalCount = 1
+let selectedCurrency = '';
+
+//Drop_Down 클릭 이벤트
+let dds = document.querySelectorAll('.dropdown-item')
+dds.forEach((item)=>{
+    item.addEventListener('click', function (e) {
+        const textElement = item.innerText;
+        document.querySelector('#dropdownMenuButton1').innerText = textElement;
+        selectedCurrency = textElement;
+    });
+});
+
+calculate(); //정산 버튼
 
 // Username 추가 버튼 함수
 function addUserBtn(paramNum){
@@ -58,5 +71,34 @@ function repositionBtn(num) {
             break;
         }
         result--;
+    }
+}
+
+function calculate() {
+    const calculateBtn = document.querySelector('#calculate');
+    calculateBtn.addEventListener('click', function () {
+        alert('정산 완료');
+    });
+}
+
+// async function을 사용하여 비동기 통신임을 선언
+async function reqCalculation(nickname){
+    // await fetch(API요청을 받는 백엔드 주소), {API요청에 담을 정보}
+    const response = await fetch(`${backendBaseUrl}/mypage/${nickname}`, {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+            'X-CSRFToken': csrftoken,
+            'Authorization': 'Bearer ' + token,
+        }
+    })
+    // await로 백엔드에서 리턴을 받은 후 다음 라인이 실행
+    if (response.status == 200){
+        data = await response.json()
+        return data
+    }
+    else {
+        console.log(response.status, "유저 활동 데이터가 없습니다")
+        return response.status
     }
 }
