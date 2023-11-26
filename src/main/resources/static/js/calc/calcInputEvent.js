@@ -25,7 +25,7 @@ function addUserBtn(paramNum){
     newElement.className = "row";
     newElement.id = 'user-' + (Number(paramNum)+1).toString();
     newElement.innerHTML = `<div class="input-group flex-nowrap ms-1">`
-        + `<input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping">`
+        + `<input type="text" class="form-control" name="name" placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping">`
         + `<div id="addBtnArea">`
         + `<div id="addBtn"><a class="btn btn-primary" id="addUserBtn" onclick="addUserBtn(${paramNum +1})">+</a></div>`
         + `</div>`
@@ -77,17 +77,25 @@ function repositionBtn(num) {
 function calculate() {
     const calculateBtn = document.querySelector('#calculate');
     calculateBtn.addEventListener('click', function () {
+        if(totalCount < 2){
+            return alert('정산 인원은 2명 이상입니다.');
+        }
+        if(selectedCurrency === ''){
+            return alert('통화를 선택해주세요');
+        }
         alert('정산 완료');
     });
 }
 
 // async function을 사용하여 비동기 통신임을 선언
 async function reqCalculation(nickname){
-    // await fetch(API요청을 받는 백엔드 주소), {API요청에 담을 정보}
-    const response = await fetch(`${backendBaseUrl}/mypage/${nickname}`, {
-        method: 'GET',
-        mode: 'cors',
-        headers: {
+     const reqData = {
+
+     }
+
+    const response = await fetch(`/request/calc`, {
+        method: 'POST',
+        body: {
             'X-CSRFToken': csrftoken,
             'Authorization': 'Bearer ' + token,
         }
