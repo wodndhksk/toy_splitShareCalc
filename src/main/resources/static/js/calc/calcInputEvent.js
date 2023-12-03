@@ -74,6 +74,13 @@ function repositionBtn(num) {
     }
 }
 
+/**
+ * 1. 금액은 숫자만 입력가능하게 수정필요
+ * 2.  '+' 버튼 누를때 새로 추가된 input 태그에 자동 focus 처리 필요
+ * 3. 정산하기 버튼 마무리 하기
+ * 4. 최초 input 태그 리팩토링 필요 (html 에 스크립트를 실행해서 최초 input 를 생성하는 방법으로 변경)
+ *  => 수정시 2개의 html 부분 수정 해야하는 비효율 때문에 리팩토링 해야함.
+ */
 function calculate() {
     const calculateBtn = document.querySelector('#calculate');
     calculateBtn.addEventListener('click', function () {
@@ -83,23 +90,36 @@ function calculate() {
         if(selectedCurrency === ''){
             return alert('통화를 선택해주세요');
         }
-        alert('정산 완료');
+        const names = document.querySelectorAll('[name="name"]');
+        for(const i in names){
+            if(names[i].value !== undefined){
+                console.log(names[i].value);
+            }
+        }
+        // alert('정산 완료\n' + names[0]);
+        // console.log(names)
     });
 }
 
 // async function을 사용하여 비동기 통신임을 선언
 async function reqCalculation(nickname){
-     const reqData = {
+    const names = document.querySelector('[name="name"]');
 
-     }
-
-    const response = await fetch(`/request/calc`, {
+    const url = '/request/calc';
+    const options = {
         method: 'POST',
-        body: {
-            'X-CSRFToken': csrftoken,
-            'Authorization': 'Bearer ' + token,
-        }
-    })
+        mode: 'cors',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json;charset=UTF-8'
+        },
+        body: JSON.stringify({
+            property_one: value_one,
+            property_two: value_two
+        })
+    };
+
+    const response = await fetch(url, options)
     // await로 백엔드에서 리턴을 받은 후 다음 라인이 실행
     if (response.status == 200){
         data = await response.json()
