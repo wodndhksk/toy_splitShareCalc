@@ -74,6 +74,15 @@ function repositionBtn(num) {
     }
 }
 
+function calcValidation() {
+    if(totalCount < 2){
+        return alert('정산 인원은 2명 이상입니다.');
+    }
+    if(selectedCurrency === ''){
+        return alert('통화를 선택해주세요');
+    }
+}
+
 /**
  * 1. 금액은 숫자만 입력가능하게 수정필요
  * 2.  '+' 버튼 누를때 새로 추가된 input 태그에 자동 focus 처리 필요
@@ -84,21 +93,23 @@ function repositionBtn(num) {
 function calculate() {
     const calculateBtn = document.querySelector('#calculate');
     calculateBtn.addEventListener('click', function () {
-        if(totalCount < 2){
-            return alert('정산 인원은 2명 이상입니다.');
-        }
-        if(selectedCurrency === ''){
-            return alert('통화를 선택해주세요');
-        }
+        calcValidation();// validation 체크
         const names = document.querySelectorAll('[name="name"]');
         for(const i in names){
             if(names[i].value !== undefined){
-                console.log(names[i].value);
+                console.log('이름 로그 : ' + names[i].value);
             }
         }
         // alert('정산 완료\n' + names[0]);
-        // console.log(names)
+        console.log(getAvg())
     });
+}
+
+function getAvg(){
+    const count = Number(totalCount);
+    const price = Number(document.querySelector('#totalPrice').value);
+
+    return Number(price/count).toFixed(2); // 소수점 2자리
 }
 
 // async function을 사용하여 비동기 통신임을 선언
