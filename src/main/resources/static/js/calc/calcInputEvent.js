@@ -1,5 +1,5 @@
-let userCount = 1
-let totalCount = 1
+let userCount = 0
+let totalCount = 0
 let selectedCurrency = '';
 
 //Drop_Down 클릭 이벤트
@@ -13,9 +13,17 @@ dds.forEach((item)=>{
 });
 
 calculate(); //정산 버튼
+addUserBtn(0); //초기 입력 input 태그 생성
 
 // Username 추가 버튼 함수
 function addUserBtn(paramNum){
+    const currentNum = Number(paramNum);
+    let nextNum = Number(paramNum) + 1;
+
+    //최초 생성일 경우
+    // if (paramNum === 0) {
+    //     nextNum = paramNum;
+    // }
 
     if(totalCount > 6){
         return alert(`${totalCount} 이상 추가 하실 수 없습니다`)
@@ -23,21 +31,23 @@ function addUserBtn(paramNum){
 
     let newElement = document.createElement('div');
     newElement.className = "row";
-    newElement.id = 'user-' + (Number(paramNum)+1).toString();
+    newElement.id = 'user-' + currentNum.toString();
     newElement.innerHTML = `<div class="input-group flex-nowrap ms-1">`
         + `<input type="text" class="form-control" name="name" placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping">`
-        + `<div id="addBtnArea">`
-        + `<div id="addBtn"><a class="btn btn-primary" id="addUserBtn" onclick="addUserBtn(${paramNum +1})">+</a></div>`
-        + `</div>`
-        + `<a class="btn btn-danger" id="delUserBtn" onclick="delUserBtn(${paramNum + 1})">-</a>`
+        + addUserBtnHtml(nextNum)
+        + `<a class="btn btn-danger" id="delUserBtn" onclick="delUserBtn(${currentNum})">-</a>`
         + `</div>`;
 
-    // 추가된 버튼에서만 '+' 버튼 보이게 처리
-    let element = document.querySelector(`#user-${paramNum}`);
-    element.querySelector('#addBtn').remove();
-
-    // Username input 태그 append 처리
-    document.getElementById(`user-${paramNum}`).insertAdjacentElement('afterend', newElement);
+    if(paramNum > 0) {
+        // 추가된 버튼에서만 '+' 버튼 보이게 처리
+        let element = document.querySelector(`#user-${paramNum-1}`);
+        element.querySelector('#addBtn').remove();
+        // Username input 태그 append 처리
+        document.getElementById(`user-${paramNum-1}`).insertAdjacentElement('afterend', newElement);
+    } else {
+        const parentsElement = document.querySelector('#user_row');
+        parentsElement.appendChild(newElement);
+    }
     userCount++;
     totalCount++;
 }
@@ -59,19 +69,25 @@ function delUserBtn(num){
 
 // 마지막 input 태그가 삭제시 '+' 버튼 위치 이동
 function repositionBtn(num) {
-    let result  = num-1;
-    while(result >= 0){
-        const parentTag = document.querySelector(`#user-${result}`);
+    const currentNum = Number(num-1);
+    const nextNum = Number(num);
+
+    while(currentNum >= 0){
+        const parentTag = document.querySelector(`#user-${currentNum}`);
         if(parentTag != undefined && parentTag != null){
             let innerChildElement = parentTag.querySelector('#addBtnArea');
-            innerChildElement.innerHTML = `<div id="addBtn">`
-                 +`<a class="btn btn-primary" id="addUserBtn" onclick="addUserBtn(${result})">+</a>`
-                 +`<div id="addBtn">`;
+            innerChildElement.innerHTML = addUserBtnHtml(nextNum);
 
             break;
         }
-        result--;
+        // result--;
     }
+}
+
+function addUserBtnHtml(paramNum){
+    return `<div id="addBtnArea">`
+        + `<div id="addBtn"><a class="btn btn-primary" id="addUserBtn" onclick="addUserBtn(${paramNum})">+</a></div>`
+        + `</div>`
 }
 
 function calcValidation() {

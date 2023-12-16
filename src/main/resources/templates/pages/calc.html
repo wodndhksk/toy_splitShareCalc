@@ -9,16 +9,8 @@
     <div class="w-50" style="margin:0 auto;">
         <h2>정산 맴버</h2>
         <div class="d-grid gap-3">
-            <div class="row" id="user-0">
-                <div class="input-group flex-nowrap ms-1">
-                    <input type="text" class="form-control" placeholder="Username" aria-label="Username"
-                           name="name" aria-describedby="addon-wrapping">
-                    <div id="addBtnArea">
-                        <div id="addBtn"><a class="btn btn-primary" onclick="addUserBtn(0)">+</a></div>
-                    </div>
-                    <a class="btn btn-danger" id="delUserBtn" onclick="delUserBtn(0)">-</a>
-                </div>
-            </div>
+            <!-- 정산 user 가 추가/삭제 되는 영역-->
+            <div id="user_row"></div>
             <div class="row">
                 <h2>금액</h2>
                 <div class="input-group mb-3 ms-1 dropdown">
