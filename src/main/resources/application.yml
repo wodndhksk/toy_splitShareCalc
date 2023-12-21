@@ -15,13 +15,19 @@ spring:
     restart:
       enabled: true
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/calc_db?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=UTF-8&characterSetResults=UTF-8&useSSL=true
-    username: root
-    password: 1q2w3e4r!
+    ### h2 database
+    url: jdbc:h2:tcp://localhost/~/test
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+    ### mysql database
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/calc_db?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=UTF-8&characterSetResults=UTF-8&useSSL=true
+#    username: root
+#    password: 1q2w3e4r!
 
   jpa:
-    database: mysql
+#    database: mysql
     show-sql: true
     hibernate:
       ddl-auto: create
@@ -29,3 +35,4 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
+        globally_quoted_identifiers: true
