@@ -1,4 +1,3 @@
-let userCount = 0
 let totalCount = 0
 let selectedCurrency = '';
 
@@ -20,11 +19,6 @@ function addUserBtn(paramNum){
     const currentNum = Number(paramNum);
     let nextNum = Number(paramNum) + 1;
 
-    //최초 생성일 경우
-    // if (paramNum === 0) {
-    //     nextNum = paramNum;
-    // }
-
     if(totalCount > 6){
         return alert(`${totalCount} 이상 추가 하실 수 없습니다`)
     }
@@ -33,8 +27,8 @@ function addUserBtn(paramNum){
     newElement.className = "row";
     newElement.id = 'user-' + currentNum.toString();
     newElement.innerHTML = `<div class="input-group flex-nowrap ms-1">`
-        + `<input type="text" class="form-control" id="name-${currentNum.toString()}" name="name" placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping">`
-        + addUserBtnHtml(nextNum)
+        + `<input type="text" class="form-control" name="name" placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping">`
+        + addUserBtnHtml(nextNum) // '+' 버튼 영역
         + `<a class="btn btn-danger" id="delUserBtn" onclick="delUserBtn(${currentNum})">-</a>`
         + `</div>`;
 
@@ -44,12 +38,10 @@ function addUserBtn(paramNum){
         element.querySelector('#addBtn').remove();
         // Username input 태그 append 처리
         document.getElementById(`user-${paramNum-1}`).insertAdjacentElement('afterend', newElement);
-        document.querySelector(`#name-${currentNum.toString()}`).focus(); // 포커스 처리
     } else {
         const parentsElement = document.querySelector('#user_row');
         parentsElement.appendChild(newElement);
     }
-    userCount++;
     totalCount++;
 }
 
@@ -78,7 +70,6 @@ function repositionBtn(num) {
         if(parentTag != undefined && parentTag != null){
             let innerChildElement = parentTag.querySelector('#addBtnArea');
             innerChildElement.innerHTML = addUserBtnHtml(nextNum);
-            document.querySelector(`#name-${currentNum}`).focus(); // 포커스 처리
 
             break;
         }
@@ -86,6 +77,7 @@ function repositionBtn(num) {
     }
 }
 
+// '+' 버튼 영역
 function addUserBtnHtml(paramNum){
     return `<div id="addBtnArea">`
         + `<div id="addBtn"><a class="btn btn-primary" id="addUserBtn" onclick="addUserBtn(${paramNum})">+</a></div>`
@@ -102,8 +94,11 @@ function calcValidation() {
 }
 
 /**
- * 요구사항
- * 1. 정산하기 버튼 마무리 하기
+ * 1. 금액은 숫자만 입력가능하게 수정필요
+ * 2.  '+' 버튼 누를때 새로 추가된 input 태그에 자동 focus 처리 필요
+ * 3. 정산하기 버튼 마무리 하기
+ * 4. 최초 input 태그 리팩토링 필요 (html 에 스크립트를 실행해서 최초 input 를 생성하는 방법으로 변경)
+ *  => 수정시 2개의 html 부분 수정 해야하는 비효율 때문에 리팩토링 해야함.
  */
 function calculate() {
     const calculateBtn = document.querySelector('#calculate');
