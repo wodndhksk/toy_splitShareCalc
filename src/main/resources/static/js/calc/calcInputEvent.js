@@ -105,13 +105,9 @@ function calculate() {
     calculateBtn.addEventListener('click', function () {
         calcValidation();// validation 체크
         const names = document.querySelectorAll('[name="name"]');
-        for(const i in names){
-            if(names[i].value !== undefined){
-                console.log('이름 로그 : ' + names[i].value);
-            }
-        }
         // alert('정산 완료\n' + names[0]);
         console.log(getAvg())
+        calcResult(names, getAvg());
     });
 }
 
@@ -120,6 +116,40 @@ function getAvg(){
     const price = Number(document.querySelector('#totalPrice').value);
 
     return Number(price/count).toFixed(2); // 소수점 2자리
+}
+
+// 정산 결과 영역
+function calcResult(names, avg) {
+    let resultAreaElement = document.querySelector("#resultArea");
+    resultAreaElement.innerHTML = resultAreaHtml(names, avg);
+}
+
+// 정산 결과 html 함수
+function resultAreaHtml(names, avg) {
+    let result = '';
+    let count = 0;
+    const currency = '' //통화 추가하기
+
+    for(const i in names){
+        if(names[i].value !== undefined){
+            result += `<tr><th scope="row">${i}</th>`
+                    + `<td>${names[i].value}</td>`
+                    + `<td>${avg}</td>`
+                    // + `<td>${currency}</td>`
+                    + `</tr>`
+            count += 1;
+        }
+    }
+    console.log('count', count);
+    // 해당 영역 노출/비노출 처리
+    let styleElement = document.querySelector('#calcResultTag');
+    if(count > 0) {
+        styleElement.style.display = 'block';
+        console.log('들어옴');
+    }else {
+        styleElement.style.display = 'none';
+    }
+    return result;
 }
 
 // async function을 사용하여 비동기 통신임을 선언
