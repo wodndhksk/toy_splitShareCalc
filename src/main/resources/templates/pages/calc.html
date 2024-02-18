@@ -19,11 +19,11 @@
                             aria-expanded="false">통화선택
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
-                        <li><a class="dropdown-item" id="usd">USD</a></li>
+                        <li><a class="dropdown-item" id="krw">KRW</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" id="krw">KRW</a></li>
+                        <li><a class="dropdown-item" id="usd">USD</a></li>
                     </ul>
                 </div>
             </div>
@@ -32,18 +32,52 @@
             </div>
         </div>
     </div>
-    <div class="row" style="display: none" id="calcResultTag">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">이름</th>
-                    <th scope="col">금액</th>
-                </tr>
-            </thead>
-            <tbody id="resultArea">
-            </tbody>
-        </table>
+    <div class="w-50" style="margin:0 auto;">
+        <div class="row" style="display: none" id="calcResultTag">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">이름</th>
+                        <th scope="col">금액</th>
+                    </tr>
+                </thead>
+                <tbody id="resultArea">
+                </tbody>
+            </table>
+            <div class="row" style="margin:0 auto;" id="share">
+                <a class="btn btn-success" id="shareBtn">공유하기</a>
+            </div>
+        </div>
+    </div>
+    <div class="w-50" style="margin:0 auto;">
+        <div class="row g-3" style="display: none" id="shareInfo">
+            <hr>
+            <h5>공유 플랫폼 선택</h5>
+            <div class="row">
+                <div class="mb-3">
+                    <div class="form-check">
+                        <input class="form-check-input" name="platform" onclick="checkOnlyOne(this)" type="checkbox" value="" id="flexCheckDefault" checked>
+                        <label class="form-check-label" for="flexCheckDefault">
+                            Discord
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" name="platform" onclick="checkOnlyOne(this)" type="checkbox" value="" id="flexCheckChecked">
+                        <label class="form-check-label" for="flexCheckChecked">
+                            Slack
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <h5>Webhook url 입력하기</h5>
+                <input type="text" class="form-control" id="webhookUrlInput" placeholder="webhook 의 url 을 입력해주세요.">
+            </div>
+            <div class="row" style="margin:0 auto;" id="request">
+                    <a class="btn btn-success" id="reqShare">전송하기</a>
+            </div>
+        </div>
     </div>
     <script th:src="@{/js/calc/calcInputEvent.js}" ></script>
 </div>

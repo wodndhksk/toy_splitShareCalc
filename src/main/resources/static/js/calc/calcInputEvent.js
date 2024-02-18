@@ -12,6 +12,7 @@ dds.forEach((item)=>{
 });
 
 calculate(); //정산 버튼
+shareBtn(); //공유하기 버튼
 addUserBtn(0); //초기 입력 input 태그 생성
 
 // Username 추가 버튼 함수
@@ -86,11 +87,14 @@ function addUserBtnHtml(paramNum){
 
 function calcValidation() {
     if(totalCount < 2){
-        return alert('정산 인원은 2명 이상입니다.');
+        alert('정산 인원은 2명 이상입니다.');
+        return false;
     }
     if(selectedCurrency === ''){
-        return alert('통화를 선택해주세요');
+        alert('통화를 선택해주세요')
+        return false;
     }
+    return true;
 }
 
 /**
@@ -103,12 +107,42 @@ function calcValidation() {
 function calculate() {
     const calculateBtn = document.querySelector('#calculate');
     calculateBtn.addEventListener('click', function () {
-        calcValidation();// validation 체크
+        // 공유하기 영역 노출 처리
+        document.querySelector('#shareInfo').innerHTML = '';
+
+        // validation 체크
+        const validation = calcValidation();
+        if (!validation) {
+            console.log("계산실패");
+            return;
+        }
         const names = document.querySelectorAll('[name="name"]');
-        // alert('정산 완료\n' + names[0]);
-        console.log(getAvg())
+        // 정산 완료 영역 노출
         calcResult(names, getAvg());
     });
+}
+
+//TODO 공유하기 영역 innerHtml 로 구현 - 2024.2.18
+// 공유하기 버튼
+function shareBtn() {
+    const shareBtn = document.querySelector('#shareBtn');
+    shareBtn.addEventListener('click', function () {
+        // 공유하기 영역 비노출 처리
+        document.querySelector('#shareInfo').style.display = 'block';
+    })
+
+}
+
+//TODO 공유하기 영역 innerHtml 로 구현 - 2024.2.18
+function shareInfoHtml() {
+    return `<div class="mb-3">
+                <h5>Webhook url 입력하기</h5>
+                <input type="text" class="form-control" id="webhookUrlInput" placeholder="webhook 의 url 을 입력해주세요.">
+            </div>
+            <div class="row" style="margin:0 auto;" id="request">
+                    <a class="btn btn-success" id="reqShare">전송하기</a>
+            </div>`
+
 }
 
 function getAvg(){
@@ -132,7 +166,7 @@ function resultAreaHtml(names, avg) {
 
     for(const i in names){
         if(names[i].value !== undefined){
-            result += `<tr><th scope="row">${i}</th>`
+            result += `<tr><th scope="row">${Number(i)+1}</th>`
                     + `<td>${names[i].value}</td>`
                     + `<td>${avg}</td>`
                     // + `<td>${currency}</td>`
@@ -180,4 +214,15 @@ async function reqCalculation(nickname){
         console.log(response.status, "유저 활동 데이터가 없습니다")
         return response.status
     }
+}
+
+// 체크박스 하나만 선택되게 처리
+function checkOnlyOne(element) {
+    const checkboxes = document.getElementsByName("platform");
+    //체크박스 checked 전부 해제
+    checkboxes.forEach((cb) => {
+        cb.checked = false;
+    })
+    // 선택한 요소만 checked 처리
+    element.checked = true;
 }
